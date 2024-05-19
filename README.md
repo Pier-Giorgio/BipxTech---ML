@@ -75,7 +75,7 @@ The results are as follows:<br>
 The model shows excellent performance, with a balance between learning and generalisation, as demonstrated by the loss and accuracy metrics. These results are very promising and indicate that the model is well trained, with a good ability to generalise to unseen data.<br>
 
 **Why an ANN with 3 layers (256-128-64) and 100 epochs (batch size 64)**
-The choice of our model architecture was the result of a rigorous testing process, during which we tested different configurations by varying the number of layers, number of epochs and batch size. This approach allowed us to identify the most effective structure based on key metrics such as accuracy and loss in testing, as well as performance during the training and validation phases.<br>
+The choice of our model architecture was the result of a rigorous testing process, during which we tested different configurations by varying the number of layers, number of epochs and batch size. This approach allowed us to identify the most effective structure based on key metrics such as accuracy and loss in testing, as well as performance during the training and validation phases. (_If you want to check the results obtained with the different ANN structures, they are present in the file called "ANN_Type_Summary.pdf"_)<br>
 
 To determine the optimal configuration, we ran several models with varying architectures. Each model was evaluated in terms of test accuracy, test loss, and training and validation metrics. This systematic process ensured that our final selection was based on solid data representative of model performance in real-world scenarios.<br>
 
