@@ -118,7 +118,7 @@ In conclusion, the model with early stopping demonstrates a better balance betwe
 
 ### **ANN MODEL WITHOUT VARIABLES CONSISTING OF DESCRIPTIVE TEXT**
 During the development of our Artificial Neural Network (ANN) model, we assessed the importance of each of the 26 variables in the dataset, with particular attention to those consisting of descriptive text, such as the ‘DescriptionRow’ column. This column contains phrases referring to names of products, books, activities or projects, which raised doubts as to their actual usefulness for predicting our target.
-In order to determine whether these variables were really necessary, we decided to test the model by specifically excluding ‘DescriptionRow’ to observe the impact on performance. The results of this test were significant: the model recorded a Test Loss of 3.3531 and a Test Accuracy of 17.92%. <br>
+In order to determine whether these variables were really necessary, we decided to test the model by specifically excluding ‘DescriptionRow’ to observe the impact on performance. The results of this test were significant: the model recorded a Test Loss of 3.3531 and a Test Accuracy of 17.92%. (_We did not include the codes relating to this in the final code as it would have created confusion. If you want to test the veracity of the results, just delete the RowDescrtion column and run the code relating to the model with all the variables present in the .ipynb_)<br>
 
 These results indicate that the removal of the variable ‘DescriptionRow ‘had a significant negative impact on the performance of the model, suggesting that, despite their textual format, the information contained in these descriptions is relevant for the prediction of the exemption VAT code. The high loss and low accuracy compared to previous versions of the model, which included this variable, demonstrate how descriptive phrases may indeed contain key elements necessary for the correct classification and generalisation of the model. This experiment emphasises the importance of carefully considering which variables to exclude in the model optimisation process, especially when dealing with textual data that might seem less directly related to the prediction target.
 
@@ -159,7 +159,7 @@ This model manages to guarantee an **accuracy** of approximately 95% and a **los
 
 The 26-variable model outperforms, albeit slightly, the 6-variable model in terms of both accuracy and loss, demonstrating greater effectiveness in generalising to new data. However, the 26-variable model shows a slightly wider margin between training and validation performance, suggesting a potentially greater propensity for overfitting than the 6-variable model. Although the 26-variable model shows superior performance, it needs to be closely monitored for the risk of overfitting, although it currently shows no significant signs of problems.<br>
 
-We also tried to build a model using the 6 variables with the highest correlation rate with IvaM, but this model proved to be inferior in terms of both accuracy and loss at all stages (training, validation and testing). Below are the results of the model with the 6 variables with the highest correlation rate with IvaM ('Art1', 'Iva', 'ContoStd', 'Conto', 'CTra', 'A'):<br>
+We also tried to build a model using the 6 variables with the highest correlation rate with IvaM, but this model proved to be inferior in terms of both accuracy and loss at all stages (training, validation and testing). Below are the results of the model with the 6 variables with the highest correlation rate with IvaM ('Art1', 'Iva', 'ContoStd', 'Conto', 'CTra', 'A') (_We did not include the codes relating to this in the final code as it would have created confusion. If you want to test the veracity of the results shown below, just replace the variables in the code present in the .ipynb file_):<br>
 •	**Test Loss**: 0.2444<br>
 •	**Test Accuracy**: 92.85%<br>
 •	**Final Train Loss**: 0.1845<br>
@@ -178,3 +178,7 @@ Subsequently, the categorical attributes between the entered data, specifically 
 Once prepared, the transformed data are provided as input to the ANN model. The model processes these inputs and produces a probability array for each possible class. The class with the highest probability is selected using the function np.argmax(), which identifies the index of the category predicted as most likely. This index is then mapped to a readable label (IvaM code), using a pre-loaded label map, thus transforming the numerical output of the model into a user-understandable form.<br>
 
 Finally, the predicted IvaM code is displayed in an output label, thus showing the user the result of the prediction made by the model. This workflow not only automates the prediction process but also ensures that the user's interactions with the model are intuitive and efficient.
+
+<br>
+
+### **CONCLUSIONS**
