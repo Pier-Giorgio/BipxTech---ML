@@ -74,7 +74,7 @@ The results are as follows:<br>
 **Final Validation Accuracy**: 97.2761%<br>
 The model shows excellent performance, with a balance between learning and generalisation, as demonstrated by the loss and accuracy metrics. These results are very promising and indicate that the model is well trained, with a good ability to generalise to unseen data.<br>
 
-**Why an ANN with 3 layers (256-128-64) and 100 epochs (batch size 64)** <br>
+**Why an ANN with 3 layers (256-128-64) and 100 epochs (batch size 64)**
 The choice of our model architecture was the result of a rigorous testing process, during which we tested different configurations by varying the number of layers, number of epochs and batch size. This approach allowed us to identify the most effective structure based on key metrics such as accuracy and loss in testing, as well as performance during the training and validation phases.<br>
 
 To determine the optimal configuration, we ran several models with varying architectures. Each model was evaluated in terms of test accuracy, test loss, and training and validation metrics. This systematic process ensured that our final selection was based on solid data representative of model performance in real-world scenarios.<br>
@@ -92,10 +92,48 @@ The decision to select this model as the 'best' was not only based on accuracy, 
 <br>
 
 ### **MODEL OPTIMIZATION PROCESS** <br>
+Optimising a machine learning model is crucial to improve its performance, ensure good generalisation, reduce the risk of overfitting, and improve computational efficiency. For these reasons, we decided to implement an optimisation of the model, even though we had found it to be very accurate and well-fitted. There are several optimisation methods, we have chosen Early Stopping, but why?<br>
 
+Definition: EarlyStopping throughout training, it keeps an eye on a performance metric, like loss on a validation set, and ends the process if, after a predetermined amount of epochs, performance on this metric no longer improves. EarlyStopping monitors the tracked measure during training, determining whether it gets better with each epoch. Training is terminated if the measurements do not improve after a certain amount of patience epochs. This improves training efficiency and helps avoid overfitting.<br>
 
+The use of early stopping represents an effective strategy for balancing the management of overfitting with the maintenance of high performance. By implementing this technique, the model proves to perform well in terms of both loss and accuracy in training and validation sets, indicating a remarkable ability to generalise without compromising learning. This form of optimisation ensures that the model is robust and generalises effectively to unseen data. It avoids the risk of overfitting the training data, providing robust protection against overfitting while maintaining high performance. Although the use of early stopping may result in a slight decrease in accuracy compared to a non-optimised model, this reduction is minimal and acceptable since the baseline accuracy level is already high.<br>
 
+Early stopping stops training as soon as it is observed that the performance improvement on the validation set ceases, thus ensuring that the model does not just store the training data but actually learns to generalise from them. Given the diversity of VAT codes and the complexity of the task, a model that avoids overfitting to training data is more likely to provide reliable results even on new and varied data.<br>
 
+Early Stopping Model result:<br>
+•	**Test Loss**: 0.12497568130493164<br>
+•	**Test Accuracy**: 0.9711802005767822<br>
+•	**Final Train Loss**: 0.0642<br>
+•	**Final Train Accuracy**: 97.8292%<br>
+•	**Final Validation Loss**: 0.1278<br>
+•	**Final Validation Accuracy**: 97.0344%<br>
+
+Calculating the discrepancies between the training and validation data in our model with early stopping provides important insights into its ability to generalise and resistance to overfitting. The difference between the **final validation and training loss** is 0.0636, while the difference between the **final training and validation accuracy** is 0.79%. These discrepancies indicate that the model shows only a moderate level of overfitting, suggesting a good ability to generalise to new data.<br>
+The discrepancy in the loss of 0.0636 reveals that although there is a difference between training and validation performance, it is not excessive, indicating that the model has not overfitted to the training data. Similarly, a discrepancy of about 0.79% in accuracy confirms that the model maintains consistent performance when exposed to new data, a crucial aspect for practical applications. <br>
+![image](https://github.com/Pier-Giorgio/BipxTech---ML/assets/151735476/3587447d-2a22-47ba-bbdd-87e11c937625)
+
+In conclusion, the model with early stopping demonstrates a better balance between learning and generalisation than the basic model. Loss and accuracy metrics indicate that the model not only learns effectively from the training data but is also able to transfer this learning effectively to the validation data. This makes it particularly robust and reliable for real-world applications, where generalisation and overfitting reduction are key aspects. <br>
+
+<br>
+
+### **ANN MODEL WITHOUT VARIABLES CONSISTING OF DESCRIPTIVE TEXT**
+During the development of our Artificial Neural Network (ANN) model, we assessed the importance of each of the 26 variables in the dataset, with particular attention to those consisting of descriptive text, such as the ‘DescriptionRow’ column. This column contains phrases referring to names of products, books, activities or projects, which raised doubts as to their actual usefulness for predicting our target.
+In order to determine whether these variables were really necessary, we decided to test the model by specifically excluding ‘DescriptionRow’ to observe the impact on performance. The results of this test were significant: the model recorded a Test Loss of 3.3531 and a Test Accuracy of 17.92%. <br>
+
+These results indicate that the removal of the variable ‘DescriptionRow ‘had a significant negative impact on the performance of the model, suggesting that, despite their textual format, the information contained in these descriptions is relevant for the prediction of the exemption VAT code. The high loss and low accuracy compared to previous versions of the model, which included this variable, demonstrate how descriptive phrases may indeed contain key elements necessary for the correct classification and generalisation of the model. This experiment emphasises the importance of carefully considering which variables to exclude in the model optimisation process, especially when dealing with textual data that might seem less directly related to the prediction target.
+
+<br>
+
+### **RANDOM FOREST MODEL AS A BENCHMAK**
+To check the quality of the cleaning and processing of our dataset, we decided to compare the results of our artificial neural network (ANN) model with those of a Random Forest model, used as a benchmark. The choice of the Random Forest model is motivated by its popularity and effectiveness in the field of classification.<br>
+The results obtained from the Random Forest model showed an **accuracy** of 98.17%, slightly higher than that of our ANN model. This shows that it was not a fluke that our dataset generated the results shown above. However, we wanted to examine the risk of overfitting in the Random Forest model by comparing the **accuracy on the training set** (99.98%) with that **on the test set** (98.17%).
+Despite the high accuracy on both sets, the difference of approximately 1.81% between the training and test accuracy is considered minimal in many contexts and not indicative of **significant overfitting**, especially given the high level of overall accuracy. However, the near perfect training accuracy suggests that the model may have learned specificities of the training data that do not fully translate to the test data.<br>
+
+On the other hand, the closeness between the accuracy on the training, validation and test sets in our ANN model suggests that it is generalising well, without suffering significantly from overfitting. This is indicative of a good model that manages to capture complex relationships between variables, reducing the need for feature engineering. Furthermore, neural networks are known to scale well with large datasets and complex architectures, improving their ability to generalise to new data.
+
+<br>
+
+### **MODEL WITH SIX VARIABLES FOR THE MODEL**
 
 
 
