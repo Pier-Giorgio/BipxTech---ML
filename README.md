@@ -1,5 +1,5 @@
 # BIPxTech-TeamSystem: Analysis of Iva data and implement of Machine learning model
-**Introduction**<br>
+### **INTRODUCTION**
 In this project, we aim to develop a predictive model capable of determining the VAT exemption code (IvaM) for each line item in an invoice, leveraging the information from other fields within the same line item. The accurate prediction of VAT exemption codes is crucial for financial accuracy, regulatory compliance, and efficient invoice processing in various business contexts.<br>
 
 Ensuring financial accuracy through correctly predicting VAT exemption codes is crucial for maintaining the integrity of financial records. This accuracy helps prevent costly errors and discrepancies that could arise from incorrect VAT calculations. Moreover, automating the prediction of VAT exemption codes enhances operational efficiency by streamlining the invoicing process. This automation reduces the time and effort required for manual entry and validation, leading to faster processing times, lower administrative costs, and improved overall productivity.<br>
@@ -15,3 +15,4 @@ model best suited to our goal. The choice of the final model is based on a thoro
 •**Model evaluation**: the selected model is rigorously evaluated using appropriate metrics such as accuracy and test loss. Comparisons between identical models but made up of different structures are also
 used to understand and guarantee the best possible reliability and stability of performance for the chosen model.<br>
 •**User interface development**: to facilitate user interaction with the model, a simple and intuitive user interface is developed. This interface allows users to input invoice line item details and receive predicted VAT exemption codes in real-time.<br>
+
