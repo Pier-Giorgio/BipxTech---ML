@@ -68,10 +68,10 @@ The accuracy graph reflects a similar trend to that of loss. The accuracy on bot
 
 ![image](https://github.com/Pier-Giorgio/BipxTech---ML/assets/151735476/dc3898d8-98da-4066-8a64-cfbe1d7f49b8) <br>
 The results are as follows:<br>
-**Final Train Loss**: 0.0368<br>
-**Final Train Accuracy**: 98.6798%<br>
-**Final Validation Loss**: 0.1502<br>
-**Final Validation Accuracy**: 97.2761%<br>
+•**Final Train Loss**: 0.0368<br>
+•**Final Train Accuracy**: 98.6798%<br>
+•**Final Validation Loss**: 0.1502<br>
+•**Final Validation Accuracy**: 97.2761%<br>
 The model shows excellent performance, with a balance between learning and generalisation, as demonstrated by the loss and accuracy metrics. These results are very promising and indicate that the model is well trained, with a good ability to generalise to unseen data.<br>
 
 **Why an ANN with 3 layers (256-128-64) and 100 epochs (batch size 64)**
@@ -133,7 +133,48 @@ On the other hand, the closeness between the accuracy on the training, validatio
 
 <br>
 
-### **MODEL WITH SIX VARIABLES FOR THE MODEL**
+### **ANN MODEL WITH 6 VARIABLES**
+Once we have decided on the model and verified its performance with our data set, the next step is to implement this model with a user interface that allows users to enter data as input and obtain the corresponding IvaM code as output.<br>
+Initially, we planned to use the ANN model with 26 variables as the basis for the user interface. However, this approach requires the user to enter 26 different inputs (corresponding to the 26 variables in our dataset) to derive the IvaM code. This approach would be very inconvenient and inefficient in terms of speed and usability.<br>
+To improve efficiency and user experience, we tried to find a model that used fewer variables while maintaining similar accuracy to the 26-variable model. This allows us to significantly reduce the number of inputs required from the user, making the process much smoother and faster, without compromising the accuracy of the IvaM code predictions.
+After various analyses, we chose an ANN using the following 6 variables:<br>
 
+1.	**Iva**: we use the Iva variable because it was recommended in the project guide pdf file. The ‘Iva’ column contains the code describing the nature of the transaction or the Iva rate applied.<br>
 
+2.	**Ateco**: this variable is useful for predicting the IvaM code; this usefulness stems mainly from the code's ability to reflect specific tax rules that vary significantly between sectors. It helps to clearly identify which firms are eligible for benefits, such as Iva exemptions or reductions. the ATECO code proves to be a key feature in predictive models such as ANNs, where it helps to significantly improve the accuracy of predictions through the correlation between economic activities and their Iva exemptions<br>
 
+3.	**TIva**: indicating the Iva category or regime applicable to a specific transaction, item or service. classifies transactions according to different Iva regimes or rates, potentially including standard, reduced, zero or exemption rates. This distinction is crucial for correctly calculating the tax due and ensuring tax compliance. This code ensures that invoices are issued with the appropriate Iva rate, influencing the accounting of sales and purchases. It is an important feature in our predictive model, since the type of Iva applied may be related to or influenced by the applicable Iva exemption code.<br>
+
+4.	**Conto**: This variable is crucial for financial reporting and accounting, as it determines the specific account to which each transaction line or invoice is allocated. This helps to categorise and manage financial data accurately. It provides a structured way to understand how transactions are categorised, which can help identify patterns and correlations with Iva exemptions.<br>
+
+5.	**CoDitta**: This code is critical for distinguishing between the various entities involved in transactions, allowing precise attribution of invoices, payments, and other financial transactions to the correct business entity. It acts as a unique key to identify companies within a database or information system. This ensures that all transactions, documents and operations are correctly recorded and attributed to the right entity. This code is then used to link specific invoices, purchase orders, and payments to the correct company.<br>
+
+6.	**Rev**: This variable corresponds to reverse charge is a mechanism that shifts the responsibility for paying Iva from the seller to the buyer in certain transactions. The presence of a specific value in this variable could indicate that for that transaction the Iva should be handled by the buyer rather than the seller. We have chosen this variable because the reverse charge mechanism may influence the likelihood of a transaction being subject to specific Iva exemptions.
+
+This model manages to guarantee an **accuracy** of approximately 95% and a **loss** of 0.2. Regarding performance management to control overfitting risk, we have obtained the following results:<br>
+•**Final Train Loss**: 0.1324<br>
+•**Final Train Accuracy**: 95.5622%<br>
+•**Final Validation Loss**: 0.1716<br>
+•**Final Validation Accuracy**: 95.5655%<br>
+
+The 26-variable model outperforms, albeit slightly, the 6-variable model in terms of both accuracy and loss, demonstrating greater effectiveness in generalising to new data. However, the 26-variable model shows a slightly wider margin between training and validation performance, suggesting a potentially greater propensity for overfitting than the 6-variable model. Although the 26-variable model shows superior performance, it needs to be closely monitored for the risk of overfitting, although it currently shows no significant signs of problems.<br>
+
+We also tried to build a model using the 6 variables with the highest correlation rate with IvaM, but this model proved to be inferior in terms of both accuracy and loss at all stages (training, validation and testing). Below are the results of the model with the 6 variables with the highest correlation rate with IvaM ('Art1', 'Iva', 'ContoStd', 'Conto', 'CTra', 'A'):<br>
+•	**Test Loss**: 0.2444<br>
+•	**Test Accuracy**: 92.85%<br>
+•	**Final Train Loss**: 0.1845<br>
+•	**Final Train Accuracy**: 93.65%<br>
+•	**Final Validation Loss**: 0.2185<br>
+•	**Final Validation Accuracy**: 92.66%<br>
+
+In conclusion, in order to ensure a better user experience in terms of efficiency and convenience, we chose to use the 6-variable model (‘Iva’, ‘Ateco’, ‘TIva’, ‘Conto’, ‘CoDitta’, ‘Rev’) for our purpose. Although it has a lower accuracy than the 26-variable model, the difference is minimal (about 2 percentage points). Furthermore, the 6-variable model performs better in terms of overfitting, ensuring a lower risk of incorrect predictions. The choice of the 6 variables listed above was made through a process of analysis and research into the meaning and usefulness of the 26 variables in our dataset after the cleaning process. This analysis of the variables is documented in the PDF file called ‘BIP_variable_analysis’.
+
+<br>
+
+### **USER INTERFACE IMPLEMENTATION**
+The code inherent to the user interface collects the data entered by the user through interactive widgets, transforms it through encoding and normalisation processes, and uses it to make predictions using a previously trained artificial neural network (ANN) model. The process begins when the user enters values into text fields corresponding to specific attributes such as Iva, Ateco, TIva, Conto, CoDitta and Rev. This data is collected in a DataFrame as soon as the user clicks the ‘Predict’ button.<br>
+
+Subsequently, the categorical attributes between the entered data, specifically ‘Iva’ and ‘Rev’, are converted to numeric formats through a pre-trained encoder. This step is crucial to ensure that the categorical variables are compatible with the model. After encoding, all data are normalised using a pre-trained scaler, ensuring that the values are aligned with the scales used during the model training phase.
+Once prepared, the transformed data are provided as input to the ANN model. The model processes these inputs and produces a probability array for each possible class. The class with the highest probability is selected using the function np.argmax(), which identifies the index of the category predicted as most likely. This index is then mapped to a readable label (IvaM code), using a pre-loaded label map, thus transforming the numerical output of the model into a user-understandable form.<br>
+
+Finally, the predicted IvaM code is displayed in an output label, thus showing the user the result of the prediction made by the model. This workflow not only automates the prediction process but also ensures that the user's interactions with the model are intuitive and efficient.
