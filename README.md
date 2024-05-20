@@ -379,9 +379,9 @@ Below we then analyzed the first set of categorical variables: <br>
 -	**A** : Business type <br> 
 -	**B** : Business with deferred VAT <br> 
 -	**D** : VAT exigibility of the document <br>  
--	**Tdoc : Document Type <br>  
+-	**Tdoc** : Document Type <br>  
 -	**VA** : Document type sales (V) or purchases (A) <br>  
--	**DescrizioneRiga : Description of the row (first 98 characters) <br>  
+-	**DescrizioneRiga** : Description of the row (first 98 characters) <br>  
 -	**Iva** : Nature or VAT rate applied <br>  
 -	**Art1** : Article deriving from the XML invoice. The field accepts the data type field <br>
 
@@ -491,7 +491,7 @@ Finally, we titled the heat map 'Heat Map of Correlation Matrix' to succinctly d
 _numerical_columns = df_filtered.select_dtypes(include=['float64', 'int64']).columns_ <br>
 _df_numerical = df_filtered[numerical_columns]_ <br>
 
--# Calculate the correlation matrix<br> <br>
+-# Calculate the correlation matrix<br>
 _correlation_matrix = df_numerical.corr()_ <br>
 
 -# Create a heat map<br>
