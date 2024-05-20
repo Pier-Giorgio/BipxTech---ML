@@ -694,6 +694,41 @@ Finally, the predicted IvaM code is displayed in an output label, thus showing t
 
 <br>
 
+### **4 ABOUT LIBRARIES**
+For our ANN model, several libraries were used, each with specific functions essential for the development process of the machine learning model:<br>
+
+**Scikit-learn**: Several functions are used from this library:<br>
+•**train_test_split**: Used to split the dataset into training, validation and test sets, allowing a valid separation of the data for model training and validation.<br>
+•**LabelEncoder**: This tool is used to convert categorical labels into integers, essential for handling target variables in classification tasks.<br>
+
+**TensorFlow Keras**:
+•**Sequential**: Used to create a sequential artificial neural network (ANN) model by structuring the network layers in a linear manner.<br>
+•**Dense**: Used to add dense, i.e. fully connected, layers to the neural network, fundamental for building the learning dynamics in the model.<br>
+•**to_categorical**: This function transforms numeric labels into a categorical format, commonly known as one-hot encoding, facilitating the processing of target variables in the classification model.<br>
+
+**TensorFlow Keras Callbacks (from tensorflow.keras.callbacks import EarlyStopping)**:<br>
+•**EarlyStopping**: This callback is crucial for optimising the training of the model. It stops training early if the validation value (val_loss or val_accuracy) stops improving. This mechanism helps prevent overfitting, ensuring that the model maintains a good generalisation capability without over-storing the specific details of the training set.<br>
+
+
+Instead, regarding the implementation of the user interface, we used:<br>
+**TensorFlow Keras**:<br>
+•**Save** and **load_model**: Used to save a trained model to disk and subsequently reload it. This preserves not only the model architecture, but also the weights and configuration of the optimiser, facilitating reproducibility and use of the model without the need for re-training.<br>
+
+**Scikit-learn**:<br>
+•**OrdinalEncoder**: Transforms categorical variables into integer values while maintaining the order of the values, essential for handling categorical variables that require a specific order.<br>
+•**MinMaxScaler**: Scales numeric data to a specified range (typically 0 to 1), normalising features to improve model performance during training and prediction.<br>
+
+**Pickle**:<br>
+Used to save and load Python objects, such as models and preprocessing tools. This allows configured objects to be preserved during the training phase, ensuring data consistency in the prediction phase and reducing the risk of discrepancies due to differences in data preparation.<br>
+
+**LabelEncoder**:<br>
+Transforms target categorical labels into numerical values, a necessary step for machine learning models involving numerical outputs, facilitating the handling of target classes in classification tasks.<br>
+
+**IPython Widgets** (ipywidgets.widgets as widgets):<br>
+Used to create an interactive user interface directly in a notebook environment. These widgets allow user input to be collected for specific variables and make predictions based on this data, significantly improving the interactivity and usability of the model.<br>
+
+<br>
+
 ### **5 CONCLUSIONS**<br>
 This project had as its primary objective to create a model to predict the VAT exemption code (IvaM) for each invoice line using the data set provided. Through a meticulous process of data analysis, preprocessing, model development, and user interface implementation, several key insights and findings emerged.<br>
 
