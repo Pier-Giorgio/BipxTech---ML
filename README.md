@@ -312,12 +312,12 @@ _df_filtered.describe().T_ <br>
 Univariate analysis involves analyzing and visualizing the dataset by examining one variable at a time. This type of analysis is fundamental for understanding the individual characteristics of each variable, which helps in identifying patterns, distributions, and potential outliers. Effective data visualization is crucial in this process, as it allows us to gain insights into the data and make informed decisions about subsequent analyses.<br>
 When performing univariate analysis, it is important to choose the appropriate type of chart or plot based on the nature of the variable. Univariate analysis can be conducted on both categorical and numerical variables, each requiring different visualization techniques.<br>
 
-Categorical variables represent discrete categories or groups. To visualize these variables, we can use the following plots:
+Categorical variables represent discrete categories or groups. To visualize these variables, we can use the following plots:<br>
 - **Count Plot**: A count plot displays the frequency of each category in the variable. It is useful for understanding the distribution and prevalence of different categories.<br>
 - **Bar Chart**: Similar to a count plot, a bar chart represents the frequency of categories using bars. It is an effective way to compare the sizes of different groups.<br>
 - **Pie Plot**: A pie plot shows the proportion of each category as segments of a circle. This plot is useful for visualizing the relative sizes of categories in a variable.<br>
 
-Numerical variables represent continuous or discrete numerical values. For these variables, we can use the following plots:
+Numerical variables represent continuous or discrete numerical values. For these variables, we can use the following plots:<br>
 - **Histogram**: A histogram displays the distribution of a numerical variable by dividing the data into bins and plotting the frequency of values in each bin. It helps in understanding the shape, central tendency, and spread of the data.<br>
 - **Box Plot**: A box plot shows the distribution of a numerical variable through its quartiles, highlighting the median, interquartile range, and potential outliers. It is useful for comparing distributions and identifying outliers.<br>
 - **Density Plot**: A density plot is a smoothed version of a histogram, representing the distribution of a numerical variable as a continuous probability density curve. It provides a clearer view of the distribution's shape and variability.<br>
@@ -327,17 +327,17 @@ In our example, we conducted a univariate analysis on continuous variables using
 By performing univariate analysis, we gained valuable insights into the individual characteristics of each variable. This preliminary step is essential for identifying patterns and anomalies in the data, guiding further exploration and analysis in our machine learning project. <br>
 
 So in this section, we used histograms and box plots to visualize the behavior of the numerical variables in our dataset. This approach helps in identifying patterns, skewness, and outliers in the data. Here's a detailed explanation of the process: <br>
-1. **Calculating Skewness**:
+1. **Calculating Skewness**:<br>
    For each numerical variable, we calculated the skewness, which measures the asymmetry of the distribution of values. A skewness value close to zero indicates a symmetric distribution, while positive or negative skewness indicates a distribution that is skewed to the right or left, respectively.<br>
 
-2. **Visualizing the Variables**:
+2. **Visualizing the Variables**:<br>
    To better understand the distribution of the numerical variables, we created two types of plots for each variable:<br>
    - Histogram: This plot shows the frequency of values of the variable divided into intervals (bins). It is useful for visualizing the overall shape of the distribution, identifying any skewness, and observing the density of the data.<br>
    
    - Box Plot: This plot summarizes the distribution of the variable by showing the quartiles, median, and potential outliers. It is particularly useful for identifying the spread of the data and the presence of outliers.<br>
 
-3. **Execution of the Code**:
-  For each numerical variable in our dataset:
+3. **Execution of the Code**:<br>
+  For each numerical variable in our dataset:<br>
    - We printed the name of the variable and its skewness value rounded to two decimal places.<br>
    - We created a figure with two side-by-side subplots. In the first subplot, we plotted the histogram of the variable to show its distribution. In the second subplot, we plotted the box plot to highlight the median, quartiles, and outliers.<br>
    - Finally, we displayed the figure to visualize the results.<br>
