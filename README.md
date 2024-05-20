@@ -27,7 +27,10 @@ Piergiorgio Martini (776831) - Team Leader, Riccardo Spadini (788291), Pietro Mi
 **3.5 ANN MODEL WITH 6 VARIABLES**<br>
 **3.6 USER INTERFACE IMPLEMENTATION**<br>
 
+**4 ABOUT LIBRARIES**<br>
+
 **5 CONCLUSIONS**<br>
+
 **6 RECCOMENDATIONS**<br>
 
 <br>
