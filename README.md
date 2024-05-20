@@ -1,5 +1,5 @@
 # BIPxTech-TeamSystem: Analysis of Iva data and implement of Machine learning model
-### **INTRODUCTION**
+### **1 INTRODUCTION**
 In this project, we aim to develop a predictive model capable of determining the VAT exemption code (IvaM) for each line item in an invoice, leveraging the information from other fields within the same line item. The accurate prediction of VAT exemption codes is crucial for financial accuracy, regulatory compliance, and efficient invoice processing in various business contexts.<br>
 
 Ensuring financial accuracy through correctly predicting VAT exemption codes is crucial for maintaining the integrity of financial records. This accuracy helps prevent costly errors and discrepancies that could arise from incorrect VAT calculations. Moreover, automating the prediction of VAT exemption codes enhances operational efficiency by streamlining the invoicing process. This automation reduces the time and effort required for manual entry and validation, leading to faster processing times, lower administrative costs, and improved overall productivity.<br>
@@ -16,6 +16,140 @@ model best suited to our goal. The choice of the final model is based on a thoro
 used to understand and guarantee the best possible reliability and stability of performance for the chosen model.<br>
 •**User interface development**: to facilitate user interaction with the model, a simple and intuitive user interface is developed. This interface allows users to input invoice line item details and receive predicted VAT exemption codes in real-time.<br>
 
+<br>
+
+### **2 METHODS**
+We begin our project with the preprocessing of the dataset and the initial Exploratory Data Analysis (EDA) that allow us to have an overview of our data. 
+
+### **2.1 INTRODUCTION TO DATA SCRUB** 
+The objective of this section is to prepare the data for analysis and build a preliminary understanding of the dataset through Exploratory Data Analysis (EDA) techniques. Preprocessing and EDA are crucial steps in the machine learning process, as they ensure that the data are clean, consistent, and properly structured for use in predictive models. Preprocessing involves handling missing values, removing duplicates, correcting outliers and transforming variables, while EDA focuses on analyzing distributions, relationships and patterns in the data.
+
+### **2.2 DATASET DESCRIPTION**
+The dataset that was presented to us for our Machine Learning project was kindly sent to us by BipxTech for the creation of an exemption code mapper; it is initially composed of 134437 observations, distributed over 45 different variables, so it represents a very full-bodied dataset of information and data, so it required on our part a thorough analysis of the variables both from an economic point of view, to understand in depth what we were talking about, as well as of course from a statistical point of view; this is intended for developing a machine learning model to predict exemption VAT codes. Each record in the dataset represents an invoice line, containing various fields that provide detailed information about the transaction.
+Additional fields provide further context and details necessary for understanding the transactions and identifying patterns relevant to predicting the exemption VAT code. Data cleaning and preprocessing will be required to handle any missing or inconsistent entries, ensuring the dataset is ready for model training and analysis.
+
+### **2.3 DATA COLLECTION**
+As a first step in our project we took care to import all the libraries we need to perform our analysis; therefore, we used some essential libraries for data manipulation, visualization, preprocessing, machine learning, and neural networks. The Pandas library is very important for data manipulation and analysis, while openpyxl is used to read and write Excel files. Seaborn is a high-level interface for creating attractive statistical graphs, while Matplotlib allows us to create static, animated, and interactive visualizations. NumPy supports high-performance operations on arrays and matrices and contains an extensive library of mathematical functions for scientific computing. Finally, Scikit-learn is a leading machine learning library and offers tools for data preprocessing and model building.
+
+-# We import all the libraries that we need for our analysis<br>
+_import pandas as pd<br>
+!pip install openpyxl #We need this library to read the file in xlsx format<br>
+import seaborn as sns<br>
+import matplotlib.pyplot as plt<br>
+import numpy as np<br>
+from sklearn.preprocessing import OrdinalEncoder<br>
+from sklearn.preprocessing import MinMaxScaler<br>
+from sklearn.model_selection import train_test_split<br>
+from sklearn.preprocessing import LabelEncoder<br>
+from tensorflow.keras.models import Sequential<br>
+from tensorflow.keras.layers import Dense<br>
+from tensorflow.keras.utils import to_categorical_<br>
+
+So here we have loaded our dataset, loaded our path, and created our dataframe (df). 
+Our preliminary analysis then begins with the functions of df.shape that allowed us to visualize the dimension of the dataset, will display the number of observations (rows) and
+features (columns) in the dataset then continuing with the display of the first 10 rows of our dataset and the last 10, for visualize the first and last observations.<br>
+
+-# Load the path to read the dataset<br>
+_bip_data ='/content/luiss_data_anonym.xlsx' # Everyone enter their own path to file<br>
+df = pd.read_excel(bip_data, engine='openpyxl')<br>
+print(df)_<br>
+
+_df.shape_<br>
+
+_df.head(10)_<br>
+
+_df.tail(10)_<br>
+
+We continued with the command (.info()) helps us understand the data type and information about our data, including the number of records in each column, the data that has null or non-null, the data type and memory usage of the dataset.<br>
+
+_df.info()_<br>
+
+We took a look at duplicate checking: based on several unique values in each column and data description, we can identify continuous and categorical columns in the data; duplicate data can be handled or removed based on further analysis.<br>
+
+_df.nunique()_<br>
+
+We study again the type of variables that are present in the dataset through the command (df.dtypes), displaying the type of variables clearly; we then closed this initial part of data collection and initial data visualization with the command (df.count()), which allowed us to get a general idea of the number of observations in each column, allowing us to also understand the number of missing values present within our dataset.<br>
+
+-# We study again the type of variables that are present in the dataset<br>
+_print(df.dtypes)_<br>
+
+-# We calculate items count for each column<br>
+_df.count()_<br>
+
+### **2.4 DATA PROCESSING: DATA SCRUB** 
+The preprocessing phase involves understanding, visualizing, and analyzing data to gain insights into its characteristics and relationships. This process includes cleaning, transforming, and organizing raw data into a suitable format for the next stages of analysis. The specific methods and techniques used depend on the data's nature, the machine learning (ML) algorithms employed, and the analysis objectives. Proper data analysis and preprocessing are crucial for enhancing the quality and effectiveness of ML models. Our goal is to improve our Machine Learning model's performance through thorough preprocessing steps.<br>
+Preprocessing Steps:<br>
+1. **Understanding Data**
+   - Comprehending the structure, types, and general characteristics of the dataset.<br>
+   - Identifying the variables and their roles in the analysis.<br>
+2. **Handling Missing Values**
+   - Detecting and managing missing or null values within the dataset.<br>
+   - Techniques include imputation or removal of missing data.<br>
+3. **Variable Identification**
+   - Categorizing variables as numerical or categorical.<br>
+   - Understanding the nature and distribution of each variable.<br>
+4. **Checking for Duplicate Rows**
+   - Identifying and removing duplicate entries to ensure data integrity.<br>
+5. **Dealing with Outliers**
+   - Detecting and handling outliers that may skew the analysis.<br>
+   - Strategies include capping, flooring, or removal of outlier values.<br>
+6. **Visualization and Analysis**
+   - Creating visualizations to understand data distributions and relationships.<br>
+   - Tools used include Matplotlib and Seaborn for plotting.<br>
+7. **Normalizing Numerical Variables**
+   - Scaling numerical features to a standard range, typically 0 to 1.<br>
+   - Methods include Min-Max Scaling or Standardization.<br>
+8. **Encoding Categorical Variables**
+   - Converting categorical data into numerical format for ML algorithms.<br>
+   - Techniques include One-Hot Encoding and Label Encoding.<br>
+9. **Feature Selection or Dimensionality Reduction**
+   - Selecting relevant features or reducing dimensionality to improve model performance.<br>
+   
+We then plunged into the preprocessing of our data moving immediately to step two which is about handling missing values, since either way we had already initially studied our dataset as described above, and either way step number 1 is : understand the data, comprehending the structure, types, and general characteristics of the dataset, identifying the variables and their roles in the analysis.<br>
+
+-### **2.4.1 HANDLING MISSING VALUES**
+So to handle our missing values, we immediately displayed through the function (df.isnull().sum()) the total number of each Nan values present in each row of our dataframe and to have an overview on the presents of this missing values <br>
+
+-# This step is crucial to identify null values in our dataframe<br>
+_df.isnull().sum()_ <br>
+
+We then found that our dataset was reporting a massive amount for many rows, a little less than half, and so we continued in our study of the missing values, trying through better data visualizations, to figure out in what amounts they were missing for each row; and in the meantime we also decided to drop, delete the initial column 'Unnamed: 0' which represented only a circumstance variable, counting only the number of rows in the dataset and therefore completely useless for the purposes of our analysis.<br>
+
+-# We drop the first variable that are not useful for our predictive aim
+_df = df.drop(['Unnamed: 0'], axis = 1)<br>
+df.info()_ <br>
+
+Returning to the display of the missing values through this command, we were able to translate into percentages, the presence of missing values for each column, so that we had a clear idea of the columns that we necessarily had to delete.<br>
+ 
+-# The below code helps us to calculate the percentage of missing values in each column
+_(df.isnull().sum()/(len(df)))*100_ <br>
+
+As you can see, there are many variables that contain many Nan, some even close to or equal to 100% of the total.<br>
+We decided to eliminate the columns that have a percentage of missing values greater than 50%, to avoid that our analysis became misleading, allowing us to facilitate the in-depth understanding of the dataset, since these columns are so empty it was also difficult to impute them through an average value or a median, risking to make mistakes; the columns in question are:<br>
+-	**C** : % pro rata of activity<br>
+-	**E** : Type of withholding<br>
+-	**F**: Reason for withholding<br>
+-	**G** : Type of second document withholding<br>
+-	**H** : Reason for second withholding of document<br>
+-	**CE** : Type of transfer (AB, PR, etc.). CO identifies the contribution lines.<br>
+-	**Comp** : VAT offset for sales made by companies under special agricultural regime.<br>
+-	**Iva11** : VAT regime applied.<br>
+-	**%Forf** : flat rate %.<br>
+-	**Nomenclature** : Internal nomenclature. Retrieved for companies with item mapping and retrieved from the management system's item master.<br>
+-	**Ritac** : Standard withholding table code<br>
+-	**RF** : Electronic invoice tax regime.<br>
+-	**RifNormative** : Regulatory reference<br>
+-	**Rifamm** : Administrative reference in the electronic invoice<br>
+-	**Art2** : Second article present in the electronic invoice<br>
+-	**Value2** : Value of the second item present in the electronic invoice<br>
+-	**Art3** : Third item present in the electronic invoice<br>
+-	**Value3** : Value of the third item present in the electronic invoice<br>
+
+So firstly, we recalculate the percentage of missing values for each column, and next, we identify the columns that have more than 50% missing values; we then remove these columns from the original DataFrame, and lastly, we display the remaining columns to confirm the operation. This process is useful for cleaning the data, as it eliminates columns that contain too many missing values, which could compromise the quality of the analysis or the implementation of Machine Learning model.<br>
+
+<br>
+<br>
+<br>
 
 
 
