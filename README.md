@@ -107,7 +107,7 @@ Preprocessing Steps:<br>
    
 We then plunged into the preprocessing of our data moving immediately to step two which is about handling missing values, since either way we had already initially studied our dataset as described above, and either way step number 1 is : understand the data, comprehending the structure, types, and general characteristics of the dataset, identifying the variables and their roles in the analysis.<br>
 
--### **2.4.1 HANDLING MISSING VALUES**
+### **2.4.1 HANDLING MISSING VALUES**
 So to handle our missing values, we immediately displayed through the function (df.isnull().sum()) the total number of each Nan values present in each row of our dataframe and to have an overview on the presents of this missing values <br>
 
 -# This step is crucial to identify null values in our dataframe<br>
