@@ -1,11 +1,33 @@
 # MACHINE LEARNING REPORT BIPxTech-TeamSystem
-Piergiorgio Martini (776831) - Team Leader
-Riccardo Spadini (788291)
-Pietro Miragoli Olivieri (790451)
+Piergiorgio Martini (776831) - Team Leader, Riccardo Spadini (788291), Pietro Miragoli Olivieri (790451)
 
+<br>
 
+### **INDEX**<br>
+**1 INTRODUCTION**<br>
 
+**2 METHODS**<br>
+**2.1 INTRODUCTION TO DATA SCRUB**<br>
+**2.2 DATASET DESCRIPTION**<br>
+**2.3 DATA COLLECTION**<br>
+**2.4 DATA PROCESSING: DATA SCRUB** <br>
+**2.4.1 HANDLING MISSING VALUES**<br>
+**2.4.2 CHECKING DUPLICATE ROWS**<br>
+**2.5 EDA: EXPLORING FEATURES OF THE DATASET**<br>
+**2.5.1 CHECK AND MANAGE OUTLIERS**<br>
+**2.5.2 UNIVARIATE ANALYSIS**<br>
+**2.5.3 MULTIVARIATE ANALYSIS**<br>
+**2.6 ENCODING AND NORMALIZATION**<br>
 
+**3 CHOICE/IMPLEMENTATION OF THE MODEL AND USER INTERFACE**<br>
+**3.1 MODEL IMPLEMENTATION - ANN with 3 layers (256-128-64), 100 epochs, batch size 64**<br>
+**3.2 MODEL OPTIMIZATION PROCESS**<br>
+**3.3 ANN MODEL WITHOUT VARIABLES CONSISTING OF DESCRIPTIVE TEXT**<br>
+**3.4 RANDOM FOREST MODEL AS A BENCHMAK**<br>
+**3.5 ANN MODEL WITH 6 VARIABLES**<br>
+**3.6 USER INTERFACE IMPLEMENTATION**<br>
+
+**4 CONCLUSIONS**<br>
 
 
 ### **1 INTRODUCTION** 
@@ -605,7 +627,7 @@ In conclusion, the model with early stopping demonstrates a better balance betwe
 
 <br>
 
-### **3.3 ANN MODEL WITHOUT VARIABLES CONSISTING OF DESCRIPTIVE TEXT**
+### **3.3 ANN MODEL WITHOUT VARIABLES CONSISTING OF DESCRIPTIVE TEXT** 
 During the development of our Artificial Neural Network (ANN) model, we assessed the importance of each of the 26 variables in the dataset, with particular attention to those consisting of descriptive text, such as the ‘DescriptionRow’ column. This column contains phrases referring to names of products, books, activities or projects, which raised doubts as to their actual usefulness for predicting our target.
 In order to determine whether these variables were really necessary, we decided to test the model by specifically excluding ‘DescriptionRow’ to observe the impact on performance. The results of this test were significant: the model recorded a Test Loss of 3.3531 and a Test Accuracy of 17.92%. (_We did not include the codes relating to this in the final code as it would have created confusion. If you want to test the veracity of the results, just delete the RowDescrtion column and run the code relating to the model with all the variables present in the .ipynb_)<br>
 
@@ -613,7 +635,7 @@ These results indicate that the removal of the variable ‘DescriptionRow ‘had
 
 <br>
 
-### **3.4 RANDOM FOREST MODEL AS A BENCHMAK**
+### **3.4 RANDOM FOREST MODEL AS A BENCHMAK** 
 To check the quality of the cleaning and processing of our dataset, we decided to compare the results of our artificial neural network (ANN) model with those of a Random Forest model, used as a benchmark. The choice of the Random Forest model is motivated by its popularity and effectiveness in the field of classification.<br>
 The results obtained from the Random Forest model showed an **accuracy** of 98.17%, slightly higher than that of our ANN model. This shows that it was not a fluke that our dataset generated the results shown above. However, we wanted to examine the risk of overfitting in the Random Forest model by comparing the **accuracy on the training set** (99.98%) with that **on the test set** (98.17%).
 Despite the high accuracy on both sets, the difference of approximately 1.81% between the training and test accuracy is considered minimal in many contexts and not indicative of **significant overfitting**, especially given the high level of overall accuracy. However, the near perfect training accuracy suggests that the model may have learned specificities of the training data that do not fully translate to the test data.<br>
