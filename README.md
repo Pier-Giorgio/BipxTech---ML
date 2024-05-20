@@ -147,23 +147,371 @@ We decided to eliminate the columns that have a percentage of missing values gre
 
 So firstly, we recalculate the percentage of missing values for each column, and next, we identify the columns that have more than 50% missing values; we then remove these columns from the original DataFrame, and lastly, we display the remaining columns to confirm the operation. This process is useful for cleaning the data, as it eliminates columns that contain too many missing values, which could compromise the quality of the analysis or the implementation of Machine Learning model.<br>
 
-<br>
-<br>
-<br>
+-# So we recalculate the percentage of missing values for each column as above<br>
+_missing_percentage = df.isnull().mean() * 100_ <br>
 
+-# We identifies the columns with more than 50% missing values<br>
+_columns_to_drop = missing_percentage[missing_percentage > 50].index_ <br>
 
+-# We delete these columns directly from the original DataFrame<br>
+_df.drop(columns=columns_to_drop, inplace=True)_ <br>
 
+-# Display the remaining columns to confirm the operation<br>
+_print(df.columns)_ <br>
+ 
+-# So these are the column remaining in our analysis<br>
 
+As can be seen, we now have a smaller number of columns (variables), 19 columns were eliminated after the missing value analysis and 26 remain to continue our analysis.<br>
 
+Now we need to handle the columns that have Nan less than 50%, but are still there even if in a small percentage. They are there, even if in a small percentage. So we decide to recalculate the percentage of missing values for the remaining columns. <br>
 
+_(df.isnull().sum()/(len(df)))*100_ <br>
 
+To allow us to have a better visualization we decide to make a plot, through the missingno library, which makes us visualize Nan in real time all together.<br>
 
+-# We plot the remaining missing values to visualize them in graphics <br>
+_import missingno as msno_ <br> 
+_msno.matrix(df)_ <br>
 
+-# This graph below allows us to see the remaining Nan all together, in fact as we can see there are no more dropped columns, and allow us to visualize them in an easier way; <br>
+![image](https://github.com/Pier-Giorgio/BipxTech---ML/assets/151735476/229322d4-26f5-4bc8-a7be-ba55a4b5c44f)<br>
+Doing a count of the remaining missing values, in order to have accurate numbers, we realized that however both the number of the latter considered all together was still nonetheless both important, precisely 8163 Nan that still need to be handled to improve our dataset. <br>
 
+Then we display the variable types that have a small percentage of Nan; we can see an interesting thing, that all these columns with Nan are categorical variables (object type) and therefore difficult to handle from the point of view of missing values; so the best solution for us is to delete these rows with missing values or replace these values with the observation “Not known” or “Missing value.” the columns in question are:<br>
+-	**B** : Business with deferred VAT <br>
+-	**D** : VAT exigibility of the document<br>
+-	**DescrizioneRiga**: description of the row (first 98 characters)<br>
+-	**IvaM** : Exemption codes. 
+-	**Art1** : Article derived from the XML invoice. The field accepts the data field type.<br>
+-	**Value1** : Article code derived from the XML invoice. The field accepts the value field of the XML trace<br>
+-	**CMar** : Margin management type value on the accounting reason.<br>
+-	**CTra** : Autotransport flag value on the accounting reason.<br>
+-	**Rev** : Reverse charge reason <br>
+-	**X** : Subject to pro rata for the period prior to the invoice document date<br>
 
-<br>
+In this code segment, first, we decided to remove all rows that contained missing values, reassigning the resulting DataFrame to the df variable. Next, we verified the effectiveness of this cleanup by printing the number of missing values for each column, confirming that there were no more missing values. Finally, we saved the cleaned dataset in a CSV file called cleaned_dataset.csv. These steps were crucial in ensuring that our dataset was free of missing values, thus clearly improving the quality of our analysis. <br>
 
-### **ENCODING AND NORMALIZATION**
+-# So we decide to drop the rows that present Nan values;
+-# We drop rows with missing values and reassign to df
+_df = df.dropna()_ <br>
+
+-# Display the number of missing values per column after cleaning<br>
+_print("Missing values per column after cleaning:")_ <br>
+_print(df.isnull().sum())_ <br>
+
+-# Save the cleaned dataset <br>
+_df.to_csv('cleaned_dataset.csv', index=False)_ <br>
+
+We now have no more missing values, but we also have fewer rows of total observations, having removed all those that had at least one Nan. We now have 126,471 observations, as can be seen from the count. Thus ends our first part of Nan imputation. <br>
+
+### **2.4.2 CHECKING DUPLICATE ROWS**
+Now we move on to checking for duplicates, although in any case we have to be careful at this stage and choose the best strategy for conducting our analysis; we are not going to delete all duplicates, because our analysis however it is based on an accounting type dataset, each billing row can reveal important information to us; for this reason we decided to delete only the rows that are entirely the same, dropping the second one and keeping the first one.<br>
+
+-# We try to check for fully duplicate rows<br>
+_duplicate_rows = df[df.duplicated(keep=False)]_ <br>
+_print("Number of fully duplicate rows:", duplicate_rows.shape[0])_ <br>
+-# And print fully duplicate rows
+_print(duplicate_rows)_ <br>
+-# Remove fully duplicate rows, keeping the first
+_df = df.drop_duplicates(keep='first')_ <br>
+-# Save the cleaned dataset <br>
+_df.to_csv('cleaned_dataset.csv', index=False)_ <br>
+
+We complete this part by counting the remaining rows after removing duplicate rows and completing the preprocessing and cleaning of our data set, resulting in 114454 rows and 26 columns, which we can use to continue the study and subsequent implementation of our model. <br>
+
+### **2.5 EDA: EXPLORING FEATURES OF THE DATASET**
+Exploratory Data Analysis refers to the crucial process of performing initial investigations on data to discover patterns to check assumptions with the help of summary statistics and graphical representations.<br>  
+-	EDA can be leveraged to check for outliers, patterns, and trends in the given data.<br>
+-	EDA helps to find meaningful patterns in data.<br>
+-	EDA provides in-depth insights into the data sets to solve our business problems.<br>
+
+As a reminder of what kind of numerical variables we are talking about here, I am going to list below all specific meaning for each of these So the columns in question are:<br>
+-	**Ateco** : Ateco code<br>
+-	**DataDoc** : Document date<br>
+-	**Importo** : Amount of the row<br>
+-	**Conto** : Account resulting from mapping<br>
+-	**ContoStd** : Related standard account<br>
+-	**IvaM** : Exemption codes (table to follow)
+-	**TM** : Mapping type (table to follow)<br>
+-	**%RIT1** : % first advance withholding<br>
+-	**%RIT2** : % second advance withholding<br>
+-	**CoDitta** : Company code ts-studio<br>
+-	**TIva** : VAT type on the reason<br>
+-	**Caus** : Possible standard causal code (VAT type if the standard causal code is absent).<br>
+
+By using the df.describe() function we get an idea of the statistical characteristics of our numerical variables so we can understand any outliers in our variables, and also it gives us information from the point of view of the patterns and features that are there.<br>
+
+-# Provide a statistics summary of data belonging to numerical datatype such as int, float<br>
+_df.describe().T_ <br>
+
+Before proceeding with EDA, we separate numerical and categorical variables to facilitate analysis.<br>
+
+_cat_cols=df.select_dtypes(include=['object']).columns_ <br>
+_num_cols = df.select_dtypes(include=np.number).columns.tolist()_ <br>
+_print("Categorical Variables:")_ <br>
+_print(cat_cols)_ <br>
+_print("Numerical Variables:")_ <br>
+_print(num_cols)_ <br>
+
+### **2.5.1 CHECK AND MANAGE OUTLIERS**
+In this section we deal with the identification and management of outliers. Outliers can have a significant impact on the analysis and results. However, since this is an economic project and we cannot verify the correctness of every observation, we prefer to keep outliers without erroneously modifying the dataset. The only outliers are specific variables that we can safely modify to stay within defined ranges. <br>
+Through this code we tried to visualize through Box plots the distribution of our numerical variables to understand which and how our variables were subject to the presence of the latter. <br>
+
+-# We have to identify numerical columns <br>
+_num_cols = df.select_dtypes(include=np.number).columns.tolist()_  <br>
+_print("Numerical Variables:", num_cols)_  <br>
+
+-# Going on we visualize outliers using box plots<br>
+_for column in num_cols:_ <br>
+_plt.figure(figsize=(10, 6))_ <br>
+_sns.boxplot(x=df[column])_ <br>
+_plt.title(f'Box plot of {column}')_ <br>
+_plt.show()_ <br>
+
+-# And detect outliers using the IQR method<br>
+_outliers = pd.DataFrame()_ <br>
+
+_for column in num_cols:_ <br>
+_Q1 = df[column].quantile(0.25)_ <br>
+_Q3 = df[column].quantile(0.75)_ <br>
+_IQR = Q3 - Q1_ <br>
+_lower_bound = Q1 - 1.5 * IQR_ <br>
+_upper_bound = Q3 + 1.5 * IQR_ <br> 
+_outliers_in_column = df[(df[column] < lower_bound) | (df[column] > upper_bound)]_ <br>
+_outliers = pd.concat([outliers, outliers_in_column])_  <br>
+
+_outliers = outliers.drop_duplicates()_ <br>
+_print(f"Number of outliers detected: {outliers.shape[0]}")_ <br>
+
+-# Finally we print and inspect the outliers<br>
+_print(outliers)_ <br>
+
+We then obtain from this graphical visualization, an overview of the presence of the various outliers in our numerical columns; as we expounded earlier, we decided to ''trust'' the data and not eliminate outliers for variables that do not have values within certain ranges. The only exception therefore are the two variables Ivam and TM, which are defined within certain ranges of values.<br>
+For example, for IvaM we know that the values range from 300 to 382, so values above and below this range are definitely invalid, so the only variables that have predetermined limits for which outliers can be misleading are only IvaM and TM, but TM having only values within its range (2-20) does not create any problem for us, the only one that needs to be changed is IvaM.<br>
+
+In this code, we defined a valid range for the `IvaM` column in our dataset. The range is from a minimum of 300 to a maximum of 382. Next, we filtered the rows of the dataset to keep only those where the `IvaM` value falls within this range. The resulting dataset was then saved to a CSV file named `cleaned_dataset.csv`. Finally, we displayed the shape of the new DataFrame and the first few rows to verify the cleaning process. This process allowed us to retain only the data that falls within the specified range, thereby improving the overall quality of our dataset. <br>
+ 
+-# We define the valid range for IvaM<br>
+_valid_range_min = 300_ <br>
+_valid_range_max = 382_ <br>
+
+-# And filter out the rows where IvaM is outside the valid range <br>
+_df_filtered = df[(df['IvaM'] >= valid_range_min) & (df['IvaM'] <= valid_range_max)]_ <br>
+
+-# We save the cleaned dataset to CSV file_<br>
+_df_filtered.to_csv('cleaned_dataset.csv', index=False)_ <br>
+
+-# Display the shape of the new dataframe and first few rows <br>
+_print(df_filtered.shape)_ <br>
+_df_filtered.head()_ <br>
+
+We display again the summary of statistical features to see how it changed for IvaM and now we can consider it correct. <br>
+
+_df_filtered.describe().T_ <br>
+
+### **2.5.2 UNIVARIATE ANALYSIS**
+Univariate analysis involves analyzing and visualizing the dataset by examining one variable at a time. This type of analysis is fundamental for understanding the individual characteristics of each variable, which helps in identifying patterns, distributions, and potential outliers. Effective data visualization is crucial in this process, as it allows us to gain insights into the data and make informed decisions about subsequent analyses.<br>
+When performing univariate analysis, it is important to choose the appropriate type of chart or plot based on the nature of the variable. Univariate analysis can be conducted on both categorical and numerical variables, each requiring different visualization techniques.<br>
+
+Categorical variables represent discrete categories or groups. To visualize these variables, we can use the following plots:<br>
+- **Count Plot**: A count plot displays the frequency of each category in the variable. It is useful for understanding the distribution and prevalence of different categories.<br>
+- **Bar Chart**: Similar to a count plot, a bar chart represents the frequency of categories using bars. It is an effective way to compare the sizes of different groups.<br>
+- **Pie Plot**: A pie plot shows the proportion of each category as segments of a circle. This plot is useful for visualizing the relative sizes of categories in a variable.<br>
+
+Numerical variables represent continuous or discrete numerical values. For these variables, we can use the following plots:<br>
+- **Histogram**: A histogram displays the distribution of a numerical variable by dividing the data into bins and plotting the frequency of values in each bin. It helps in understanding the shape, central tendency, and spread of the data.<br>
+- **Box Plot**: A box plot shows the distribution of a numerical variable through its quartiles, highlighting the median, interquartile range, and potential outliers. It is useful for comparing distributions and identifying outliers.<br>
+- **Density Plot**: A density plot is a smoothed version of a histogram, representing the distribution of a numerical variable as a continuous probability density curve. It provides a clearer view of the distribution's shape and variability.<br>
+
+In our example, we conducted a univariate analysis on continuous variables using histograms and box plots. The histogram allowed us to visualize the distribution of the data, revealing the frequency and spread of values. The box plot complemented this by providing a summary of the data's central tendency, dispersion, and potential outliers. <br>
+
+By performing univariate analysis, we gained valuable insights into the individual characteristics of each variable. This preliminary step is essential for identifying patterns and anomalies in the data, guiding further exploration and analysis in our machine learning project. <br>
+
+So in this section, we used histograms and box plots to visualize the behavior of the numerical variables in our dataset. This approach helps in identifying patterns, skewness, and outliers in the data. Here's a detailed explanation of the process: <br>
+
+1. **Calculating Skewness**:<br>
+   For each numerical variable, we calculated the skewness, which measures the asymmetry of the distribution of values. A skewness value close to zero indicates a symmetric distribution, while positive or negative skewness indicates a distribution that is skewed to the right or left, respectively.<br>
+
+2. **Visualizing the Variables**:<br>
+   To better understand the distribution of the numerical variables, we created two types of plots for each variable:<br>
+   
+   - Histogram: This plot shows the frequency of values of the variable divided into intervals (bins). It is useful for visualizing the overall shape of the distribution, identifying any skewness, and observing the density of the data.<br>
+   
+   - Box Plot: This plot summarizes the distribution of the variable by showing the quartiles, median, and potential outliers. It is particularly useful for identifying the spread of the data and the presence of outliers.<br>
+
+3. **Execution of the Code**:<br>
+  For each numerical variable in our dataset:<br>
+   - We printed the name of the variable and its skewness value rounded to two decimal places.<br>
+   - We created a figure with two side-by-side subplots. In the first subplot, we plotted the histogram of the variable to show its distribution. In the second subplot, we plotted the box plot to highlight the median, quartiles, and outliers.<br>
+   - Finally, we displayed the figure to visualize the results.<br>
+
+Here's a step-by-step explanation of the code:<br>
+
+- The `for` loop iterates through each numerical column in the dataset.<br>
+- For each column, the skewness of the variable is calculated and printed.<br>
+- A figure with two side-by-side subplots is created.<br>
+- In the first subplot, a histogram of the variable is plotted without grid lines to display the distribution of values.<br>
+- In the second subplot, a box plot of the variable is plotted to highlight the median, quartiles, and outliers.<br>
+- The figure is then displayed to show the visualizations.<br>
+
+This approach allowed us to gain a clear and detailed view of the distribution of the numerical variables, making it easier to identify skewness and outliers that could affect subsequent analyses or the performance of machine learning models.<br>
+
+-# In the below figure, a histogram and box plot is used to show the pattern of the variables, as some variables have skewness and outliers. <br>
+_for col in num_cols:_ <br>
+_print(col)_ <br>
+_print('Skew :', round(df_filtered[col].skew(), 2))_ <br>
+_plt.figure(figsize = (15, 4))_ <br>
+_plt.subplot(1, 2, 1)_ <br>
+_df[col].hist(grid=False)_ <br>
+_plt.ylabel('count')_ <br>
+_plt.subplot(1, 2, 2)_ <br> 
+_sns.boxplot(x=df_filtered[col])_ <br> 
+_plt.show()_ <br>
+
+In this another section, we visualized the distribution of the first set of categorical variables in our dataset using bar plots. This approach helps us understand how frequently each category appears within these variables.<br>
+
+First, we set up a figure with multiple subplots, creating a grid of eight plots arranged in four rows and two columns. This layout allowed us to display the bar plots for multiple variables simultaneously. We also added a title to the figure to describe its content. <br> 
+
+Next, we configured each subplot to ensure the labels on the x-axis are readable. By rotating the labels by 90 degrees and adjusting their size, we made sure that even long category names are clearly visible.
+For each categorical variable, we created a bar plot that shows the frequency of each category. We ordered the categories by their frequency, displaying the most common categories first. Here’s what we did for each variable:<br> 
+●	For the first variable, we created a bar plot showing how often each category appears. <br> 
+●	We repeated this process for the second variable, the third variable, and so on, up to the eighth variable. <br> 
+●	For some variables with a large number of categories, we limited the plot to show only the top 20 most frequent categories. <br> 
+Finally, we displayed all the plots together in the figure. This visual representation allowed us to easily see the distribution of categories within each variable, providing valuable insights into the structure of our data.. <br> 
+Below we then analyzed the first set of categorical variables: <br> 
+-	**A** : Business type <br> 
+-	**B** : Business with deferred VAT <br> 
+-	**D** : VAT exigibility of the document <br>  
+-	**Tdoc : Document Type <br>  
+-	**VA** : Document type sales (V) or purchases (A) <br>  
+-	**DescrizioneRiga : Description of the row (first 98 characters) <br>  
+-	**Iva** : Nature or VAT rate applied <br>  
+-	**Art1** : Article deriving from the XML invoice. The field accepts the data type field <br>
+
+-# We create bar plots for the first set of categorical variables <br>
+_fig, axes = plt.subplots(4,2, figsize = (20, 20))_ <br> 
+_fig.suptitle('Bar plot for the first set of categorical variables in the dataset', fontsize=15)_ <br>
+_for row in axes:_ <br>
+_for ax in row:_ <br> 
+_ax.tick_params(labelrotation=90, labelsize=10)_ <br> 
+_sns.countplot(ax = axes[0, 0], x = 'A', data = df_filtered, color = 'blue',_ <br> 
+_order = df_filtered['A'].value_counts().index);_ <br> 
+_sns.countplot(ax = axes[0, 1], x = 'B', data = df_filtered, color = 'blue',_ <br> 
+_order = df_filtered['B'].value_counts().index);_ <br> 
+_sns.countplot(ax = axes[1, 0], x = 'D', data = df_filtered, color = 'blue',_ <br> 
+_order = df_filtered['D'].value_counts().index);_ <br> 
+_sns.countplot(ax = axes[1, 1], x = 'Tdoc', data = df_filtered, color = 'blue',_ <br> 
+_order = df_filtered['Tdoc'].value_counts().index);_ <br> 
+_sns.countplot(ax = axes[2, 0], x = 'VA', data = df_filtered, color = 'blue',_ <br> 
+_order = df_filtered['VA'].head(20).value_counts().index);_ <br> 
+_sns.countplot(ax = axes[2, 1], x = 'DescrizioneRiga', data = df_filtered, color = 'blue',_ <br> 
+_order = df_filtered['DescrizioneRiga'].head(20).value_counts().index);_ <br> 
+_sns.countplot(ax = axes[3, 0], x = 'Iva', data = df_filtered, color = 'blue',_ <br> 
+_order = df_filtered['Iva'].value_counts().index);_ <br> 
+_sns.countplot(ax = axes[3, 1], x = 'Art1', data = df_filtered, color = 'blue',_ <br> 
+_order = df_filtered['Art1'].value_counts().index);_ <br> 
+_plt.show()_ <br> 
+
+And below we do the same thing with the second set of categorical variables:<br> 
+-	**CMar** : Margin management type value on the accounting reason <br> 
+-	**CTra** : Autotransport flag value on the accounting reason <br> 
+-	**Rev**: Reverse charge reason <br>  
+-	**CVia** : Travel agency reason <br> 
+-	**X** : Subject to pro rata for the period prior to the invoice document date <br>
+
+-# We creating a subplot structure <br>
+_fig, axes = plt.subplots(3, 2, figsize=(20, 20))_ <br>
+_fig.suptitle('Bar plot for the second set of categorical variables in the dataset', fontsize=30)_ <br>
+
+-# And setting up individual plots <br>
+_sns.countplot(ax=axes[0, 1], x='CMar', data=df_filtered, color='blue', order=df_filtered['CMar'].value_counts().index)_ <br>
+_sns.countplot(ax=axes[1, 0], x='CTra', data=df_filtered, color='blue', order=df_filtered['CTra'].value_counts().index)_ <br>
+_sns.countplot(ax=axes[1, 1], x='Rev', data=df_filtered, color='blue', order=df_filtered['Rev'].value_counts().index)_ <br>
+_sns.countplot(ax=axes[2, 0], x='CVia', data=df_filtered, color='blue', order=df_filtered['CVia'].head(20).value_counts().index)_ <br>
+_sns.countplot(ax=axes[2, 1], x='X', data=df_filtered, color='blue', order=df_filtered['X'].head(20).value_counts().index)_ <br>
+
+-# Finally adjusting tick parameters after plotting to ensure they apply to all subplots <br>
+_for row in axes:_ <br>
+_for ax in row:_ <br>
+_ax.tick_params(labelrotation=90, labelsize=10)_ <br>
+
+_plt.show()_ <br>
+
+In this other part of the analysis, we focused on the numerical columns of our dataset to understand the relationships between them. <br>
+First, we selected only the numerical columns from our dataset. These are the columns that contain numerical data, such as integers or floating-point numbers. By filtering out the non-numerical columns, we created a new dataset that includes only the numerical information. <br>
+
+Next, we calculated the correlation matrix for these numerical columns. A correlation matrix is a table that shows the correlation coefficients between pairs of variables. The correlation coefficient is a measure of how strongly two variables are related to each other. Values close to 1 or -1 indicate strong relationships, while values close to 0 indicate weak or no relationships.  <br>
+
+After calculating the correlation matrix, we displayed it. This matrix helps us identify which numerical variables are closely related. For example, if two variables have a high positive correlation, it means that as one variable increases, the other tends to increase as well. Conversely, a high negative correlation indicates that as one variable increases, the other tends to decrease.  <br>
+
+Displaying the correlation matrix provides a clear overview of the relationships between all numerical variables in our dataset. This information is crucial for understanding the structure of the data and can guide further analysis and modeling. Identifying strong correlations can help in feature selection, where we choose the most relevant variables for building our machine learning models.  <br>
+
+-# We select only the numerical columns <br>
+_numerical_columns = df_filtered.select_dtypes(include=['float64', 'int64']).columns_ <br>
+
+-# And we calculate the correlation between IvaM and other numerical variables <br>
+_correlation_with_IvaM = df_filtered[numerical_columns].corr()['IvaM'].drop('IvaM')_ <br>
+
+-# Display the correlation with IvaM <br>
+_print("Correlation of IvaM with other numerical variables:")_ <br>
+_print(correlation_with_IvaM)_ <br>
+
+-# Optionally, visualize the correlation with a bar plot <br>
+_plt.figure(figsize=(10, 6))_ <br>
+_sns.barplot(x=correlation_with_IvaM.index, y=correlation_with_IvaM.values, palette='coolwarm')_ <br>
+_plt.title('Correlation of IvaM with Other Numerical Variables')_ <br>
+_plt.xlabel('Variables')_ <br>
+_plt.ylabel('Correlation Coefficient')_ <br>
+_plt.xticks(rotation=90)_ <br>
+_plt.show()_ <br>
+
+The graph presented is a bar plot that displays the correlation coefficients between the variable `IvaM` and other numerical variables in the dataset. The correlation coefficient is a statistical measure that indicates the strength and direction of the relationship between two variables.  <br>
+In this graph, we can observe how each variable is related to `IvaM`. For instance, we notice that `Conto` and `ContoStd` have a positive correlation with `IvaM`, suggesting that as these variables increase, the value of `IvaM` tends to increase as well. This positive relationship can help us understand which factors might be contributing to higher values of `IvaM`. <br>
+
+On the other hand, variables like `TIva`, `Caus`, and `CoDitta` show a negative correlation with `IvaM`. This means that as these variables increase, the value of `IvaM` tends to decrease. Such negative relationships can indicate factors that are inversely related to `IvaM`, providing a different perspective on how these variables interact.<br>
+
+There are also variables, such as `Importo` and `Ateco`, which have correlation coefficients close to zero. This indicates that there is a weak or no linear relationship between these variables and `IvaM`, suggesting that changes in these variables do not significantly affect `IvaM`.<br>
+Understanding these correlations is crucial for several reasons. Firstly, it aids in feature selection by identifying which variables are most relevant for predicting `IvaM`. This can enhance the efficiency and accuracy of predictive models. Secondly, the insights gained from these relationships help us make more informed decisions based on the data. Lastly, recognizing strong correlations can also assist in detecting anomalies or unexpected patterns in the dataset, which could be critical for further analysis or decision-making processes.<br>
+Overall, this bar plot provides a clear and concise summary of how `IvaM` is associated with other  numerical variables, offering valuable insights into the underlying structure of the data.<br>
+![image](https://github.com/Pier-Giorgio/BipxTech---ML/assets/151735476/d7abc565-d978-45d1-be90-e85fadb675f3)<br>
+
+### **2.5.3 MULTIVARIATE ANALYSIS**
+Multivariate analysis, as the name suggests, involves the examination of more than two variables simultaneously. This type of analysis is incredibly valuable for understanding the complex relationships and interactions between different variables within a dataset. By considering multiple variables at once, multivariate analysis allows us to uncover patterns and insights that would not be apparent when looking at variables in isolation.<br>
+
+One of the most commonly used tools for conducting multivariate analysis is the heat map. A heat map provides a visual representation of the relationships between variables, specifically highlighting the strength and direction of correlations. In a heat map, each cell represents the correlation coefficient between two variables. The color of the cell indicates the strength and direction of the correlation, with different colors representing positive and negative correlations.<br>
+
+By using a heat map, we can easily identify which variables are closely related. This is particularly useful in many applications, such as feature selection for machine learning models, where we want to choose variables that are highly informative about the outcome of interest. Moreover, understanding the correlations between variables helps in identifying multicollinearity, which can be problematic in regression analyses and other statistical models.<br>
+
+Overall, multivariate analysis, facilitated by tools like heat maps, is a powerful method for exploring and understanding the intricate web of relationships within a dataset. It provides a comprehensive view that is essential for making informed decisions and deriving meaningful conclusions from complex data.<br>
+
+In this part of the analysis, we focused on the numerical columns within our filtered dataset. First, we identified and selected these numerical columns, which included data types such as float and integer. By isolating these columns, we created a subset of the dataset that only contained numerical values.<br>
+Next, we calculated the correlation matrix for these numerical columns. The correlation matrix is a table that displays the correlation coefficients between pairs of variables. These coefficients measure the strength and direction of the linear relationship between two variables, with values ranging from -1 to 1. A coefficient close to 1 indicates a strong positive correlation, a value close to -1 indicates a strong negative correlation, and values around 0 suggest little to no linear relationship. To visualize the correlation matrix, we created a heat map. This graphical representation uses color to indicate the correlation coefficients between variables. We chose a color scheme ('coolwarm') that effectively highlights the variations in correlation strength and direction. In the heat map, each cell corresponds to a pair of variables, with the color intensity representing the magnitude of their correlation.<br>
+
+The heat map also includes annotations to display the exact correlation coefficients, formatted to two decimal places. This provides a clear and precise view of the relationships between variables. Additionally, we included a color bar to help interpret the color gradients, making it easier to understand the levels of correlation visually.<br>
+Finally, we titled the heat map 'Heat Map of Correlation Matrix' to succinctly describe the content of the visualization. Displaying this heat map allowed us to quickly and effectively identify which numerical variables in our dataset were strongly correlated, either positively or negatively. This insight is crucial for understanding the data structure and for guiding further analysis, such as identifying which variables may be redundant due to high correlation or which variables could be influential for predictive modeling.<br>
+
+-# Select only the numerical columns<br>
+_numerical_columns = df_filtered.select_dtypes(include=['float64', 'int64']).columns_ <br>
+_df_numerical = df_filtered[numerical_columns]_ <br>
+
+-# Calculate the correlation matrix<br> <br>
+_correlation_matrix = df_numerical.corr()_ <br>
+
+-# Create a heat map<br>
+_plt.figure(figsize=(14, 12))_ <br>
+_sns.heatmap(correlation_matrix, annot=True, fmt=".2f", cmap='coolwarm', cbar=True)_ <br>
+_plt.title('Heat Map of Correlation Matrix')_ <br>
+_plt.show()_ <br>
+
+The heat map we generated represents the correlation matrix for the numerical variables in our dataset. Each cell in this matrix shows the correlation coefficient between two variables, with values ranging from -1 to 1. <br>
+From our matrix, we can see that: <br>
+-	Conto and ContoStd have a perfect positive correlation (correlation coefficient of 1), indicating they are essentially the same variable. <br>
+-	TIva has a moderate positive correlation with Caus, as indicated by the lighter red color with a coefficient of 0.40. <br>
+-	Most other variable pairs show weak or no significant correlation, as indicated by the darker blue and light-colored cells. <br>
+This visualization helps us quickly identify which variables are closely related and can guide us in making decisions for further analysis, such as feature selection for modeling. <br>
+![image](https://github.com/Pier-Giorgio/BipxTech---ML/assets/151735476/a8f8d425-8902-495b-8542-2812ce2bc4e1) <br>
+
+### **2.6 ENCODING AND NORMALIZATION**
 In this section we will describe the process of encoding and normalizing the data to prepare it for training the predictive model. These steps are critical to ensuring that the model can effectively learn from available features.<br>
 
 We have chosen to use Ordinal Encoding to convert the categorical variables to numeric in our dataset. This technique assigns a unique integer value to each category, preserving the natural order of the categories (when it exists). The choice of Ordinal Encoding is primarily motivated by its simplicity and efficiency, as it is easier to implement and occupies less memory than one-hot encoding, which is ideal for working with large datasets. In addition, Ordinal Encoding is particularly compatible with certain machine learning algorithms that can benefit from the use of ordinal variables where the order of the categories could have an important meaning.<br>
@@ -172,10 +520,11 @@ To do this, we selected all non-numeric columns in the dataset, then to ensure c
 
 Concerning the normalisation process (normaliser Min-Max), we chose to scale the numerical variables in a range between 0 and 1. This process was crucial to ensure that all features have equal importance during the training of the model, preventing certain features from dominating due to their different scales. We chose to normalise rather than standardise because the distributions of our data did not follow a normal distribution. This step is particularly useful for models that are sensitive to feature scales, such as models based on neural networks, and can improve the speed and stability of convergence.
 
-
 <br>
 
-### **MODEL IMPLEMENTATION - ANN with 3 layers (256-128-64), 100 epochs, batch size 64**
+### **3 CHOICE/IMPLEMENTATION OF THE MODEL AND USER INTERFACE**
+
+### **3.1 MODEL IMPLEMENTATION - ANN with 3 layers (256-128-64), 100 epochs, batch size 64**
 **Choice of Algorithm: Artificial Neural Network (ANN)**<br>
 The aim of our work is to develop a predictive model capable of predicting the VAT exemption code for each invoice line. To do this, we opted for a model based on an artificial neural network (ANN).
 The decision to use an artificial neural network was guided by the complex and multidimensional nature of the dataset. Neural networks are particularly effective in recognising and modelling complex, non-linear relationships between input variables, making them ideal for this purpose and are particularly suitable for tabular data and can effectively handle multiclass classification. Furthermore, ANNs' ability to work with a large number of inputs and their flexibility in learning complex patterns make them well suited to make the most of the 26 available variables, which may contain significant hidden patterns for VAT code prediction.
@@ -225,7 +574,7 @@ The decision to select this model as the 'best' was not only based on accuracy, 
 
 <br>
 
-### **MODEL OPTIMIZATION PROCESS** <br>
+### **3.2 MODEL OPTIMIZATION PROCESS** <br>
 Optimising a machine learning model is crucial to improve its performance, ensure good generalisation, reduce the risk of overfitting, and improve computational efficiency. For these reasons, we decided to implement an optimisation of the model, even though we had found it to be very accurate and well-fitted. There are several optimisation methods, we have chosen Early Stopping, but why?<br>
 
 Definition: EarlyStopping throughout training, it keeps an eye on a performance metric, like loss on a validation set, and ends the process if, after a predetermined amount of epochs, performance on this metric no longer improves. EarlyStopping monitors the tracked measure during training, determining whether it gets better with each epoch. Training is terminated if the measurements do not improve after a certain amount of patience epochs. This improves training efficiency and helps avoid overfitting.<br>
@@ -250,7 +599,7 @@ In conclusion, the model with early stopping demonstrates a better balance betwe
 
 <br>
 
-### **ANN MODEL WITHOUT VARIABLES CONSISTING OF DESCRIPTIVE TEXT**
+### **3.3 ANN MODEL WITHOUT VARIABLES CONSISTING OF DESCRIPTIVE TEXT**
 During the development of our Artificial Neural Network (ANN) model, we assessed the importance of each of the 26 variables in the dataset, with particular attention to those consisting of descriptive text, such as the ‘DescriptionRow’ column. This column contains phrases referring to names of products, books, activities or projects, which raised doubts as to their actual usefulness for predicting our target.
 In order to determine whether these variables were really necessary, we decided to test the model by specifically excluding ‘DescriptionRow’ to observe the impact on performance. The results of this test were significant: the model recorded a Test Loss of 3.3531 and a Test Accuracy of 17.92%. (_We did not include the codes relating to this in the final code as it would have created confusion. If you want to test the veracity of the results, just delete the RowDescrtion column and run the code relating to the model with all the variables present in the .ipynb_)<br>
 
@@ -258,7 +607,7 @@ These results indicate that the removal of the variable ‘DescriptionRow ‘had
 
 <br>
 
-### **RANDOM FOREST MODEL AS A BENCHMAK**
+### **3.4 RANDOM FOREST MODEL AS A BENCHMAK**
 To check the quality of the cleaning and processing of our dataset, we decided to compare the results of our artificial neural network (ANN) model with those of a Random Forest model, used as a benchmark. The choice of the Random Forest model is motivated by its popularity and effectiveness in the field of classification.<br>
 The results obtained from the Random Forest model showed an **accuracy** of 98.17%, slightly higher than that of our ANN model. This shows that it was not a fluke that our dataset generated the results shown above. However, we wanted to examine the risk of overfitting in the Random Forest model by comparing the **accuracy on the training set** (99.98%) with that **on the test set** (98.17%).
 Despite the high accuracy on both sets, the difference of approximately 1.81% between the training and test accuracy is considered minimal in many contexts and not indicative of **significant overfitting**, especially given the high level of overall accuracy. However, the near perfect training accuracy suggests that the model may have learned specificities of the training data that do not fully translate to the test data.<br>
@@ -267,7 +616,7 @@ On the other hand, the closeness between the accuracy on the training, validatio
 
 <br>
 
-### **ANN MODEL WITH 6 VARIABLES**
+### **3.5 ANN MODEL WITH 6 VARIABLES**
 Once we have decided on the model and verified its performance with our data set, the next step is to implement this model with a user interface that allows users to enter data as input and obtain the corresponding IvaM code as output.<br>
 Initially, we planned to use the ANN model with 26 variables as the basis for the user interface. However, this approach requires the user to enter 26 different inputs (corresponding to the 26 variables in our dataset) to derive the IvaM code. This approach would be very inconvenient and inefficient in terms of speed and usability.<br>
 To improve efficiency and user experience, we tried to find a model that used fewer variables while maintaining similar accuracy to the 26-variable model. This allows us to significantly reduce the number of inputs required from the user, making the process much smoother and faster, without compromising the accuracy of the IvaM code predictions.
@@ -305,7 +654,7 @@ In conclusion, in order to ensure a better user experience in terms of efficienc
 
 <br>
 
-### **USER INTERFACE IMPLEMENTATION**
+### **3.6 USER INTERFACE IMPLEMENTATION**
 The code inherent to the user interface collects the data entered by the user through interactive widgets, transforms it through encoding and normalisation processes, and uses it to make predictions using a previously trained artificial neural network (ANN) model. The process begins when the user enters values into text fields corresponding to specific attributes such as Iva, Ateco, TIva, Conto, CoDitta and Rev. This data is collected in a DataFrame as soon as the user clicks the ‘Predict’ button.<br>
 
 Subsequently, the categorical attributes between the entered data, specifically ‘Iva’ and ‘Rev’, are converted to numeric formats through a pre-trained encoder. This step is crucial to ensure that the categorical variables are compatible with the model. After encoding, all data are normalised using a pre-trained scaler, ensuring that the values are aligned with the scales used during the model training phase.
@@ -315,4 +664,4 @@ Finally, the predicted IvaM code is displayed in an output label, thus showing t
 
 <br>
 
-### **CONCLUSIONS**
+### **4 CONCLUSIONS**
