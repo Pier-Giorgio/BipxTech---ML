@@ -29,6 +29,7 @@ Piergiorgio Martini (776831) - Team Leader, Riccardo Spadini (788291), Pietro Mi
 
 **4 CONCLUSIONS**<br>
 
+<br>
 
 ### **1 INTRODUCTION** 
 In this project, we aim to develop a predictive model capable of determining the VAT exemption code (IvaM) for each line item in an invoice, leveraging the information from other fields within the same line item. The accurate prediction of VAT exemption codes is crucial for financial accuracy, regulatory compliance, and efficient invoice processing in various business contexts.<br>
