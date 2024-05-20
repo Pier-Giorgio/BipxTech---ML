@@ -191,8 +191,7 @@ Then we display the variable types that have a small percentage of Nan; we can s
 
 In this code segment, first, we decided to remove all rows that contained missing values, reassigning the resulting DataFrame to the df variable. Next, we verified the effectiveness of this cleanup by printing the number of missing values for each column, confirming that there were no more missing values. Finally, we saved the cleaned dataset in a CSV file called cleaned_dataset.csv. These steps were crucial in ensuring that our dataset was free of missing values, thus clearly improving the quality of our analysis. <br>
 
--# So we decide to drop the rows that present Nan values;
--# We drop rows with missing values and reassign to df
+-# So we decide to drop the rows that present Nan values; we drop rows with missing values and reassign to df
 _df = df.dropna()_ <br>
 
 -# Display the number of missing values per column after cleaning<br>
