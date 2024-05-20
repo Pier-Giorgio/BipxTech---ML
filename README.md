@@ -327,13 +327,11 @@ In our example, we conducted a univariate analysis on continuous variables using
 By performing univariate analysis, we gained valuable insights into the individual characteristics of each variable. This preliminary step is essential for identifying patterns and anomalies in the data, guiding further exploration and analysis in our machine learning project. <br>
 
 So in this section, we used histograms and box plots to visualize the behavior of the numerical variables in our dataset. This approach helps in identifying patterns, skewness, and outliers in the data. Here's a detailed explanation of the process: <br>
-
 1. **Calculating Skewness**:<br>
    For each numerical variable, we calculated the skewness, which measures the asymmetry of the distribution of values. A skewness value close to zero indicates a symmetric distribution, while positive or negative skewness indicates a distribution that is skewed to the right or left, respectively.<br>
 
 2. **Visualizing the Variables**:<br>
    To better understand the distribution of the numerical variables, we created two types of plots for each variable:<br>
-   
    - Histogram: This plot shows the frequency of values of the variable divided into intervals (bins). It is useful for visualizing the overall shape of the distribution, identifying any skewness, and observing the density of the data.<br>
    
    - Box Plot: This plot summarizes the distribution of the variable by showing the quartiles, median, and potential outliers. It is particularly useful for identifying the spread of the data and the presence of outliers.<br>
@@ -345,7 +343,6 @@ So in this section, we used histograms and box plots to visualize the behavior o
    - Finally, we displayed the figure to visualize the results.<br>
 
 Here's a step-by-step explanation of the code:<br>
-
 - The `for` loop iterates through each numerical column in the dataset.<br>
 - For each column, the skewness of the variable is calculated and printed.<br>
 - A figure with two side-by-side subplots is created.<br>
@@ -376,6 +373,7 @@ For each categorical variable, we created a bar plot that shows the frequency of
 ●	For the first variable, we created a bar plot showing how often each category appears. <br> 
 ●	We repeated this process for the second variable, the third variable, and so on, up to the eighth variable. <br> 
 ●	For some variables with a large number of categories, we limited the plot to show only the top 20 most frequent categories. <br> 
+
 Finally, we displayed all the plots together in the figure. This visual representation allowed us to easily see the distribution of categories within each variable, providing valuable insights into the structure of our data.. <br> 
 Below we then analyzed the first set of categorical variables: <br> 
 -	**A** : Business type <br> 
