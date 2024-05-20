@@ -31,7 +31,7 @@ Piergiorgio Martini (776831) - Team Leader, Riccardo Spadini (788291), Pietro Mi
 
 **5 CONCLUSIONS**<br>
 
-**6 RECCOMENDATIONS**<br>
+**6 RECOMENDATIONS**<br>
 
 <br>
 
@@ -704,7 +704,7 @@ For our ANN model, several libraries were used, each with specific functions ess
 •**train_test_split**: Used to split the dataset into training, validation and test sets, allowing a valid separation of the data for model training and validation.<br>
 •**LabelEncoder**: This tool is used to convert categorical labels into integers, essential for handling target variables in classification tasks.<br>
 
-**TensorFlow Keras**:
+**TensorFlow Keras**:<br>
 •**Sequential**: Used to create a sequential artificial neural network (ANN) model by structuring the network layers in a linear manner.<br>
 •**Dense**: Used to add dense, i.e. fully connected, layers to the neural network, fundamental for building the learning dynamics in the model.<br>
 •**to_categorical**: This function transforms numeric labels into a categorical format, commonly known as one-hot encoding, facilitating the processing of target variables in the classification model.<br>
@@ -746,6 +746,6 @@ In conclusion, this project has developed a functional model that can accurately
 
 <br>
 
-### **6 RECCOMENDATIONS**
+### **6 RECOMENDATIONS**
 All of our code, from cleanup to model and UI implementation, was written and run on Google Collab. We therefore recommend using the code present in the file called “BIPxTech_ML_Project_Gr13_.ipynb” on the Collab platform so as not to have problems.
 The user interface was created to run on Collab and not on other platforms or applications, so we recommend using the interface on Google Collab. However, regarding the user interface code present on the website created by us through VS Code, it has undergone some modifications to adapt to VS Code and the Streamlit library.
