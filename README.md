@@ -27,7 +27,8 @@ Piergiorgio Martini (776831) - Team Leader, Riccardo Spadini (788291), Pietro Mi
 **3.5 ANN MODEL WITH 6 VARIABLES**<br>
 **3.6 USER INTERFACE IMPLEMENTATION**<br>
 
-**4 CONCLUSIONS**<br>
+**5 CONCLUSIONS**<br>
+**6 RECCOMENDATIONS**<br>
 
 <br>
 
@@ -693,4 +694,20 @@ Finally, the predicted IvaM code is displayed in an output label, thus showing t
 
 <br>
 
-### **4 CONCLUSIONS**
+### **5 CONCLUSIONS**<br>
+This project had as its primary objective to create a model to predict the VAT exemption code (IvaM) for each invoice line using the data set provided. Through a meticulous process of data analysis, preprocessing, model development, and user interface implementation, several key insights and findings emerged.<br>
+
+The thorough analysis of the dataset revealed several issues, such as missing values and duplicates, which were systematically addressed. Handling these anomalies was crucial for ensuring the quality and reliability of the data. The preprocessing steps included encoding categorical variables and normalizing numerical features. Ordinal Encoding and Min-Max Normalization were chosen for their efficiency and compatibility with the dataset, facilitating the effective use of machine learning algorithms.<br>
+
+An Artificial Neural Network (ANN) was selected for its ability to model complex, non-linear relationships within the data. The final model, with three hidden layers (256-128-64) and trained over 100 epochs, demonstrated high accuracy and robustness. Early stopping was employed to optimize the model, balancing the need to prevent overfitting with maintaining high performance. This resulted in a test accuracy of 97.18%, indicating a strong generalization capability. A comparison with a Random Forest benchmark validated the quality of the data preprocessing and the ANN's effectiveness. Despite the slightly higher accuracy of the Random Forest model, the ANN provided better generalization and scalability.<br>
+
+The importance of descriptive text variables, such as 'DescrizioneRiga', was highlighted by their significant impact on model performance. Excluding these variables led to a notable decrease in accuracy, underscoring their relevance. A simplified ANN model using only six variables ('Iva', 'Ateco', 'TIva', 'Conto', 'CoDitta', 'Rev') was developed to improve user experience. This model achieved an accuracy of 95.56%, making it a practical choice for the user interface without sacrificing significant predictive power.
+A user-friendly interface was created to allow efficient data input and real-time IvaM code prediction. By reducing the required inputs to six key variables, the interface strikes a balance between user convenience and model accuracy. The interface streamlines the interaction with the model, enabling users to input data easily and receive immediate predictions for the VAT exemption code.<br>
+
+In conclusion, this project has developed a functional model that can accurately predict the VAT exemption code for invoice lines. In-depth data analysis, careful model selection, and practical user interface design led to a solution that reflects the project goals. This model not only demonstrates high accuracy and reliability, but also provides a scalable and efficient tool for real-world applications, potentially improving financial accuracy and operational efficiency.<br>
+
+<br>
+
+### **6 RECCOMENDATIONS**
+All of our code, from cleanup to model and UI implementation, was written and run on Google Collab. We therefore recommend using the code present in the file called “BIPxTech_ML_Project_Gr13_.ipynb” on the Collab platform so as not to have problems.
+The user interface was created to run on Collab and not on other platforms or applications, so we recommend using the interface on Google Collab. However, regarding the user interface code present on the website created by us through VS Code, it has undergone some modifications to adapt to VS Code and the Streamlit library.
