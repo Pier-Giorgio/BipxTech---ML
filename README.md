@@ -1,4 +1,13 @@
-# BIPxTech-TeamSystem: Analysis of Iva data and implement of Machine learning model 
+# MACHINE LEARNING REPORT BIPxTech-TeamSystem
+Piergiorgio Martini (776831) - Team Leader
+Riccardo Spadini (788291)
+Pietro Miragoli Olivieri (790451)
+
+
+
+
+
+
 ### **1 INTRODUCTION** 
 In this project, we aim to develop a predictive model capable of determining the VAT exemption code (IvaM) for each line item in an invoice, leveraging the information from other fields within the same line item. The accurate prediction of VAT exemption codes is crucial for financial accuracy, regulatory compliance, and efficient invoice processing in various business contexts.<br>
 
